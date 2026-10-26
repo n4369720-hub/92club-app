@@ -1,0 +1,46 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.club92.app'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.club92.app"
+        minSdk 21
+        targetSdk 34
+        versionCode (System.getenv("GITHUB_RUN_NUMBER") ?: "1").toInteger()
+        versionName "1.0"
+    }
+
+    // Fixed keystore: har build same signature se sign hota hai, isliye naya APK purane app ke upar update ho jata hai
+    signingConfigs {
+        club92 {
+            storeFile file('club92.keystore')
+            storePassword 'club92pass'
+            keyAlias 'club92'
+            keyPassword 'club92pass'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.club92
+        }
+        debug {
+            applicationIdSuffix ""
+            signingConfig signingConfigs.club92
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+}
