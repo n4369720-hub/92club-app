@@ -2,6 +2,8 @@ plugins {
     id 'com.android.application'
 }
 
+def runNumber = Integer.parseInt(System.getenv("GITHUB_RUN_NUMBER") ?: "1")
+
 android {
     namespace 'com.club92.app'
     compileSdk 34
@@ -10,11 +12,10 @@ android {
         applicationId "com.club92.app"
         minSdk 21
         targetSdk 34
-        versionCode (System.getenv("GITHUB_RUN_NUMBER") ?: "1").toInteger()
+        versionCode runNumber
         versionName "1.0"
     }
 
-    // Fixed keystore: har build same signature se sign hota hai, isliye naya APK purane app ke upar update ho jata hai
     signingConfigs {
         club92 {
             storeFile file('club92.keystore')
